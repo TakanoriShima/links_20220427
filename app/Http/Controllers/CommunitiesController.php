@@ -14,7 +14,10 @@ class CommunitiesController extends Controller
      */
     public function index()
     {
-        //
+        //空のコミュニティインスタンス作成
+        $communities = Community::all();
+        //view の呼び出し
+        return view("communities.index",compact('communities'));
     }
 
     /**
@@ -24,10 +27,10 @@ class CommunitiesController extends Controller
      */
     public function create()
     {   
-        
+                
         // dd('create');
         
-        //空のコミュニティインスタンス作成
+        // 空のコミュニティインスタンス作成
         $community=new Community();
         //view の呼び出し
         return view("communities.create",compact('community'));
@@ -41,10 +44,10 @@ class CommunitiesController extends Controller
      */
     public function store(Request $request)
     {
-        //   dd('community store');
+        //  dd('community store');
         // dd($request);
-        // validation        
-        // for image ref) https://qiita.com/maejima_f/items/7691aa9385970ba7e3ed
+    //     // validation        
+    //     // for image ref) https://qiita.com/maejima_f/items/7691aa9385970ba7e3ed
         $this->validate($request, [
             'name' => 'required',
             'genre' => 'required',
@@ -59,7 +62,7 @@ class CommunitiesController extends Controller
         ]);
         
         
-           // dd('OK');
+        //   dd('OK');
         // 入力情報の取得
         $name = $request->input('name');
         $genre = $request->input('genre');
@@ -84,10 +87,10 @@ class CommunitiesController extends Controller
         
         
         // 入力情報をもとに新しいインスタンス作成
-        \Auth::user()->profile()->create(['name' => $name, 'genre' => $genre, 'participation' => $participation, 'content' => $content, 'image' => $image]);
+        \Auth::user()->communities()->create(['name' => $name, 'genre' => $genre, 'participation' => $participation, 'authority' => $authority, 'content' => $content, 'image' => $image]);
         
         // トップページへリダイレクト
-        return redirect('/mypage')->with('flash_message', 'コミュニティを作成しました');
+        return redirect('/communities')->with('flash_message', 'コミュニティを作成しました');
     }
     /**
      * Display the specified resource.
